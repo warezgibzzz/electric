@@ -1,5 +1,4 @@
-var $ = require('jquery');
-require('popper.js');
+let $ = require('jquery');
 require('bootstrap');
 
 $(document).ready(function() {

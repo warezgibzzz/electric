@@ -14,11 +14,11 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
-    GibzElectricBundle\:
+    Gibz\ElectricBundle\:
         resource: '../../src/Gibz/ElectricBundle/*'
         exclude: '../../src/Gibz/ElectricBundle/{Entity,Repository,Tests}'
 
-    GibzElectricBundle\Controller\:
+    Gibz\ElectricBundle\Controller\:
         resource: '../../src/Gibz/ElectricBundle/Controller'
         public: true
         tags: ['controller.service_arguments']

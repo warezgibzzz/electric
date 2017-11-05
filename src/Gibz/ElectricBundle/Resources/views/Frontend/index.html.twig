@@ -1,0 +1,140 @@
+{% extends 'GibzElectricBundle:Layout:frontend.html.twig' %}
+{% block page_class %}page_frontend_game{% endblock %}
+{% block content %}
+    <div class="container game-field">
+        <div class="row">
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100 light-on"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+            <div class="col">
+                <div class="cell w-100 h-100"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container scores-field">
+        <div class="row h-100">
+            <div class="col-md-2 align-self-center">
+                <div class="btn-wrap">
+                    <button type="button"
+                       class="btn btn-ladder btn-secondary btn-secondary btn-lg btn-block"
+                       data-toggle="modal"
+                       data-target="#ladder-modal"
+                    >
+                        <i class="fa fa-graduation-cap"></i> Ladder
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 offset-md-1 align-self-center">
+                <div class="scores-panel">
+                    1123
+                </div>
+            </div>
+            <div class="col-md-3 h-100 align-self-center"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="ladder-modal" tabindex="-1" role="dialog" aria-labelledby="ladder-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ladder-modal-label">{{ 'electric.front.ladder_popup.title'|trans }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'electric.front.ladder_popup.close'|trans }}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item disabled">
+                            {{ 'electric.front.ladder_popup.name'|trans }}
+                            <span class="pull-right">{{ 'electric.front.ladder_popup.points'|trans }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="http://via.placeholder.com/30x30" alt="">
+                            test
+                            <span class="badge badge-primary badge-pill pull-right">14</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'electric.front.ladder_popup.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

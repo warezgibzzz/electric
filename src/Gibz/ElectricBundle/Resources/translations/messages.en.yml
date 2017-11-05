@@ -1,0 +1,7 @@
+electric:
+  front:
+    ladder_popup:
+      title: Ladder
+      close: Close
+      name: Name
+      points: Points
