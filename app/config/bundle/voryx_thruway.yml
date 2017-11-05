@@ -1,0 +1,10 @@
+voryx_thruway:
+    realm: 'game'
+    url: 'ws://127.0.0.1:9089'
+    router:
+        ip: '127.0.0.1'
+        port: '9088'
+        trusted_port: '9089'
+        authentication: false
+    locations:
+        bundles: ["GibzElectricBundle"]
