@@ -1,0 +1,4 @@
+gibz_electric:
+    resource: "@GibzElectricBundle/Resources/config/routing.yml"
+    prefix:   /
+

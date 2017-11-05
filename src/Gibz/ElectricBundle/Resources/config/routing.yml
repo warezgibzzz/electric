@@ -1,0 +1,3 @@
+gibz_electric_homepage:
+    path:     /
+    defaults: { _controller: GibzElectricBundle:Default:index }
