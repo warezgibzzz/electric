@@ -6,5 +6,3 @@ voryx_thruway:
         port: '9088'
         trusted_port: '9089'
         authentication: false
-    locations:
-        bundles: ["GibzElectricBundle"]

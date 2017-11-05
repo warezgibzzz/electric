@@ -1,4 +1,4 @@
 services:
-#    gibz_electric.example:
-#        class: Gibz\ElectricBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    gibz_electric.service.game_service:
+        class: Gibz\ElectricBundle\Service\GameService
+        tags: ["thruway.resource"]

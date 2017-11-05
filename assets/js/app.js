@@ -1,4 +1,5 @@
 import {Connection} from 'autobahn';
+import {each} from "underscore";
 
 let $ = require('jquery');
 require('bootstrap');
@@ -19,18 +20,36 @@ let connected = false;
 connection.onopen = (session) => {
     console.log('Connected.', session);
 
+    session.call('ru.electric.new').then(
+        (res) => {
+            console.log("Result:", res);
+        },
+        (error) => {
+            console.log("Error:", error);
+        }
+    );
+
     $(document).on('click', '.cell', (e) => {
         let cell = $(e.currentTarget);
-        console.log(cell.data('pos'));
-        try {
-            session.call('ru.electric.click', cell.data('pos')).then(
-                function (res) {
-                    console.log("Result:", res);
-                }
-            );
-        } catch (e) {
-            console.log(e);
-        }
+        console.log("Sent:", cell.data('pos'));
+
+        session.call('ru.electric.click', [[cell.data('pos').toString()]]).then(
+            (res) => {
+                console.log("Result:", res);
+                each(res.field, (data, key) => {
+                    console.log(key, data);
+                    if (data.is_on) {
+                        $('.cell[data-pos="'+key+'"]').addClass('light-on');
+                    } else {
+                        $('.cell[data-pos="'+key+'"]').removeClass('light-on');
+                    }
+                });
+                $(document).find('.scores-panel').text(res.counter);
+            },
+            (error) => {
+                console.log("Error:", error);
+            }
+        );
     });
 
     connected = true;
