@@ -1,7 +1,15 @@
 electric:
   front:
+    popup:
+      close: Close
     ladder_popup:
       title: Ladder
-      close: Close
       name: Name
       points: Points
+    result_popup:
+      title: Save your record
+      username: Your name
+      save: Save record
+    page:
+      ladder_btn: Ladder
+      new_game_btn: New game

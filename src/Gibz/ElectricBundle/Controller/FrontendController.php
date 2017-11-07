@@ -19,7 +19,6 @@ class FrontendController
      * @param Request $request
      */
     public function indexAction(Request $request) {
-
     }
 
 }

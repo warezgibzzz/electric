@@ -3,7 +3,9 @@
 namespace Gibz\ElectricBundle\Service;
 
 
+use Doctrine\ORM\Query\Expr\Join;
 use Gibz\ElectricBundle\Entity\GameState;
+use Gibz\ElectricBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Voryx\ThruwayBundle\Annotation\Register;
@@ -186,7 +188,7 @@ class GameService
             return $cell['is_on'];
         }, $state['field']);
 
-        if (in_array(false, $cellStates)) {
+        if (!in_array(false, $cellStates)) {
             $state['state'] = 'winner';
         }
 
@@ -196,5 +198,75 @@ class GameService
         $em->flush();
 
         return $state;
+    }
+
+    /**
+     * @Register("ru.electric.save")
+     * @param $args
+     * @return mixed
+     */
+    public function save($args)
+    {
+        $em = $this->doctrine->getManager();
+        $userRepo = $em->getRepository('GibzElectricBundle:User');
+        $gameRepo = $em->getRepository('GibzElectricBundle:GameState');
+
+        $gameState = $gameRepo->findOneBy(['uniqId' => $args[1]]);
+
+        if (!is_null($gameState)) {
+            $cellStates = array_map(function ($cell) {
+                return $cell['is_on'];
+            }, $gameState->getState()['field']);
+
+            if (!in_array(false, $cellStates)) {
+                $user = $userRepo->findOneBy(['name' => strip_tags(stripslashes($args[0]))]);
+                if (is_null($user)) {
+                    $user = new User();
+                    $user->setName(strip_tags(stripslashes($args[0])));
+                    $em->persist($user);
+                }
+                $gameState->setUser($user);
+                $em->merge($gameState);
+                $em->flush();
+            }
+        }
+
+        return [
+            'status' => 'ok'
+        ];
+    }
+
+    /**
+     * @Register("ru.electric.ladder")
+     */
+    public function ladder($args)
+    {
+        $em = $this->doctrine->getManager()->getRepository('GibzElectricBundle:GameState');
+        $query = $em->createQueryBuilder('gs');
+        $result = $query->select('gs, u')
+            ->where($query->expr()->isNotNull('gs.user'))
+            ->leftJoin('gs.user', 'u',
+                Join::WITH,
+                'gs.user = u.id')
+            ->getQuery()
+            ->getResult();
+        $leaders = [];
+
+        foreach ($result as $item) {
+            $this->getLogger()->debug('item', ['item' => $item]);
+            $leaders[] = [
+                'name' => $item->getUser()->getName(),
+                'points' => $item->getState()['counter']
+            ];
+        }
+
+        usort($leaders, function ($left, $right) {
+            if ($left['points'] == $right['points']) {
+                return 0;
+            }
+            return ($left['points'] < $right['points']) ? -1 : 1;
+        });
+
+        return ['leaders' => $leaders];
     }
 }

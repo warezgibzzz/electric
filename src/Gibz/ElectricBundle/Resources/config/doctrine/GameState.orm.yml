@@ -16,4 +16,10 @@ Gibz\ElectricBundle\Entity\GameState:
             column: uniq_id
         state:
             type: text
+    manyToOne:
+        user:
+            targetEntity: Gibz\ElectricBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

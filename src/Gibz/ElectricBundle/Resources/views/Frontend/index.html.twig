@@ -97,7 +97,7 @@
                        data-toggle="modal"
                        data-target="#ladder-modal"
                     >
-                        <i class="fa fa-graduation-cap"></i> Ladder
+                        <i class="fa fa-graduation-cap"></i> {{ 'electric.front.page.ladder_btn'|trans }}
                     </button>
                 </div>
             </div>
@@ -108,7 +108,7 @@
             </div>
             <div class="col-md-2 align-self-center">
                 <a href="#" class="btn btn-secondary btn-new btn-lg btn-block">
-                    <i class="fa fa-file"></i> New game
+                    <i class="fa fa-file"></i> {{ 'electric.front.page.new_game_btn'|trans }}
                 </a>
             </div>
         </div>
@@ -118,25 +118,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ladder-modal-label">{{ 'electric.front.ladder_popup.title'|trans }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'electric.front.ladder_popup.close'|trans }}">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'electric.front.popup.close'|trans }}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <ul class="list-group">
+                    <ul class="list-group" id="leaders-list">
                         <li class="list-group-item disabled">
                             {{ 'electric.front.ladder_popup.name'|trans }}
                             <span class="pull-right">{{ 'electric.front.ladder_popup.points'|trans }}</span>
                         </li>
-                        <li class="list-group-item">
-                            <img src="http://via.placeholder.com/30x30" alt="">
-                            test
-                            <span class="badge badge-primary badge-pill pull-right">14</span>
-                        </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'electric.front.ladder_popup.close'|trans }}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'electric.front.popup.close'|trans }}</button>
                 </div>
             </div>
         </div>
@@ -151,12 +146,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-inline form-results">
-                        <div class="form-group">
-                            <label for="name" class="sr-only">Username</label>
-                            <input type="text" class="form-control" id="name" name="username" placeholder="Username">
+                    <form class="form-inline form-results mb-2" id="result-form">
+                        <div class="form-group mr-sm-2">
+                            <label for="name" class="sr-only">{{ 'electric.front.result_popup.username'|trans }}</label>
+                            <input type="text" class="form-control" id="name" name="username" placeholder="{{ 'electric.front.result_popup.username'|trans }}">
                         </div>
-                        <button type="submit" class="btn btn-primary">Save result</button>
+                        <button type="submit" class="btn btn-primary">{{ 'electric.front.result_popup.save'|trans }}</button>
                     </form>
                 </div>
                 <div class="modal-footer">

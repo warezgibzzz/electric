@@ -8,4 +8,10 @@ Gibz\ElectricBundle\Entity\User:
             id: true
             generator:
                 strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+            unique: true
+            column: name
     lifecycleCallbacks: {  }
