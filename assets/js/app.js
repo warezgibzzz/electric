@@ -142,6 +142,13 @@ $(document).ready(function () {
         (res) => {
           console.log(res);
           $('#leaders-list').find('li:not(.disabled)').remove();
+          if (res.leaders.length == 0) {
+            $('#leaders-list').append(
+              "<li class=\"list-group-item text-center\">" +
+              "No data" +
+              "</li>"
+            )
+          }
           res.leaders.forEach(function (item) {
             console.log(item);
             $('#leaders-list').append(
