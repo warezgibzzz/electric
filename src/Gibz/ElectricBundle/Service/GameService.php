@@ -250,22 +250,25 @@ class GameService
                 'gs.user = u.id')
             ->getQuery()
             ->getResult();
+
         $leaders = [];
 
-        foreach ($result as $item) {
-            $this->getLogger()->debug('item', ['item' => $item]);
-            $leaders[] = [
-                'name' => $item->getUser()->getName(),
-                'points' => $item->getState()['counter']
-            ];
-        }
-
-        usort($leaders, function ($left, $right) {
-            if ($left['points'] == $right['points']) {
-                return 0;
+        if (count($result) > 0) {
+            foreach ($result as $item) {
+                $this->getLogger()->debug('item', ['item' => $item]);
+                $leaders[] = [
+                    'name' => $item->getUser()->getName(),
+                    'points' => $item->getState()['counter']
+                ];
             }
-            return ($left['points'] < $right['points']) ? -1 : 1;
-        });
+
+            usort($leaders, function ($left, $right) {
+                if ($left['points'] == $right['points']) {
+                    return 0;
+                }
+                return ($left['points'] < $right['points']) ? -1 : 1;
+            });
+        }
 
         return ['leaders' => $leaders];
     }
