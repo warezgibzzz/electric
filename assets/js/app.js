@@ -137,6 +137,13 @@ $(document).ready(function () {
       return false;
     });
 
+    $('#result-modal').on('show.bs.modal', function (e) {
+      if (typeof $.cookie('name') !== 'undefined')
+      {
+        $('#result-form #name').val($.cookie('name'));
+      }
+    });
+
     $('#ladder-modal').on('show.bs.modal', function (e) {
       session.call('ru.electric.ladder').then(
         (res) => {
