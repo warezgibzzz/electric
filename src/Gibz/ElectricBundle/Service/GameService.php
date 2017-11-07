@@ -3,177 +3,197 @@
 namespace Gibz\ElectricBundle\Service;
 
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Gibz\ElectricBundle\Entity\GameState;
+use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Voryx\ThruwayBundle\Annotation\Register;
 
-class GameService implements ContainerAwareInterface
+class GameService
 {
-    private $state = [];
-    private $chance = 25;
-    private $container;
+    /**
+     * 1 / 25 = 0.04 = 4%
+     * @see GameService::getChance()
+     */
+    const CHANCE = 4;
 
-    public function __construct()
+    /**
+     * @var RegistryInterface $container
+     */
+    private $doctrine;
+
+    /**
+     * @var LoggerInterface $logger
+     */
+    private $logger;
+
+    /**
+     * GameService constructor.
+     * @param RegistryInterface $doctrine
+     * @param LoggerInterface $logger
+     */
+    public function __construct(RegistryInterface $doctrine, LoggerInterface $logger)
     {
-        $this->setState([
-            "field" => [
-
-
-                "00" => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                "01" => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                "02" => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                "03" => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                "04" => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                10 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                11 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                12 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                13 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                14 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                20 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                21 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                22 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                23 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                24 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                30 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                31 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                32 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                33 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                34 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                40 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                41 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                42 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                43 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-                44 => [
-                    'is_clicked' => false,
-                    'is_on' => false,
-                ],
-            ],
-            'counter' => 0
-        ]);
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
+        $this->setLogger($logger);
+        $this->setDoctrine($doctrine);
     }
 
     /**
-     * @return array
+     * @param RegistryInterface|null $doctrine
      */
-    public function getState(): array
+    public function setDoctrine(RegistryInterface $doctrine = null)
     {
-        return $this->state;
+        $this->doctrine = $doctrine;
     }
 
     /**
-     * @param array $state
+     * @return LoggerInterface
      */
-    public function setState(array $state)
+    public function getLogger(): LoggerInterface
     {
-        $this->state = $state;
+        return $this->logger;
     }
 
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * Throwing d100, if dice is lower or equal to chance - you win (nope).
+     * @return bool
+     */
     private function getChance(): bool
     {
         $rand = mt_rand(1, 100);
-        if ($rand <= $this->chance) {
+        if ($rand <= $this::CHANCE) {
             return true;
         }
         return false;
     }
 
     /**
-     * @Register("ru.electric.new")
+     * Generates game uniqid, state, and persists it in database.
+     * If uniqid is set, fetches game state from db.
+     * @param null $uniqId
+     * @return array
      */
-    public function new()
+    public function generateState($uniqId = null): array
     {
-        return $this->getState();
+        $em = $this->doctrine->getManager();
+        if (!is_null($uniqId)) {
+            $this->getLogger()->debug('uid', ['uid' => $uniqId]);
+            $repo = $em->getRepository('GibzElectricBundle:GameState');
+            $state = $repo->findOneBy(["uniqId" => $uniqId]);
+        } else {
+            $bytes = openssl_random_pseudo_bytes(25);
+            $gid = bin2hex($bytes);
+
+            $state = new GameState();
+            $state->setUniqId($gid);
+            $fieldState = $state->getState();
+            $fieldState['uniqid'] = $gid;
+            $state->setState($fieldState);
+
+            $em->persist($state);
+            $em->flush();
+        }
+        $this->getLogger()->debug('state', ['state' => $state]);
+
+        return $state->getState();
+
+    }
+
+    /**
+     * @Register("ru.electric.new")
+     * @param $args
+     * @return array
+     */
+    public function new($args)
+    {
+        if (isset($args[0])) {
+            return $this->generateState($args[0]);
+        } else {
+            return $this->generateState();
+        }
     }
 
     /**
      * @Register("ru.electric.click")
-     * @param $pos
+     * @param $args
      * @return mixed
      */
-    public function click($pos): array
+    public function click($args): array
     {
-        $state = $this->getState();
-        $state['field'][$pos[0]]['is_clicked'] = true;
-        $state['field'][$pos[0]]['is_on'] = true;
+        $gameState = $this->doctrine->getRepository('GibzElectricBundle:GameState')->findOneBy(['uniqId' => $args[1]]);
+
+        $state = $gameState->getState();
+
+        if ($state['field'][$args[0]]['is_clicked']) {
+            return $state;
+        }
+
+        $state['field'][$args[0]]['is_clicked'] = true;
+        $state['field'][$args[0]]['is_on'] = true;
+
+        list($x, $y) = str_split((string)$args[0], 1);
+
+        if ($x == 0) {
+            $x1 = 0;
+            $x2 = 1;
+        } else {
+            $x1 = $x - 1;
+            if ($x == 4) {
+                $x2 = 4;
+            } else {
+                $x2 = $x + 1;
+            }
+        }
+
+        if ($y == 0) {
+            $y1 = 0;
+            $y2 = 1;
+        } else {
+            $y1 = $y - 1;
+            if ($y == 4) {
+                $y2 = 4;
+            } else {
+                $y2 = $y + 1;
+            }
+        }
+
+        for ($xPos = $x1; $xPos <= $x2; $xPos++) {
+
+            for ($yPos = $y1; $yPos <= $y2; $yPos++) {
+                $iterPos = $xPos . "" . $yPos;
+                if ($state['field'][$iterPos]['is_on'] && !$state['field'][$iterPos]['is_clicked']) {
+                    $state['field'][$iterPos]['is_on'] = false;
+                } else {
+                    $state['field'][$iterPos]['is_on'] = true;
+                }
+            }
+        }
+
+        if ($this->getChance()) {
+            $state['field'][array_keys($state['field'])[mt_rand(0, count($state['field']) - 1)]]['is_on'] = true;
+        }
+
         $state['counter']++;
-        $this->setState($state);
+
+        $cellStates = array_map(function ($cell) {
+            return $cell['is_on'];
+        }, $state['field']);
+
+        if (in_array(false, $cellStates)) {
+            $state['state'] = 'winner';
+        }
+
+        $em = $this->doctrine->getManager();
+        $gameState->setState($state);
+        $em->merge($gameState);
+        $em->flush();
 
         return $state;
     }

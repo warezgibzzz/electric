@@ -1,0 +1,11 @@
+Gibz\ElectricBundle\Entity\User:
+    type: entity
+    table: null
+    repositoryClass: Gibz\ElectricBundle\Repository\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    lifecycleCallbacks: {  }

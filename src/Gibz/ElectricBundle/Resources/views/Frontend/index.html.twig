@@ -93,7 +93,7 @@
             <div class="col-md-2 align-self-center">
                 <div class="btn-wrap">
                     <button type="button"
-                       class="btn btn-ladder btn-secondary btn-secondary btn-lg btn-block"
+                       class="btn btn-ladder btn-secondary btn-lg btn-block"
                        data-toggle="modal"
                        data-target="#ladder-modal"
                     >
@@ -101,12 +101,16 @@
                     </button>
                 </div>
             </div>
-            <div class="col-md-6 offset-md-1 align-self-center">
+            <div class="col-md-8 align-self-center">
                 <div class="scores-panel">
                     0
                 </div>
             </div>
-            <div class="col-md-3 h-100 align-self-center"></div>
+            <div class="col-md-2 align-self-center">
+                <a href="#" class="btn btn-secondary btn-new btn-lg btn-block">
+                    <i class="fa fa-file"></i> New game
+                </a>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="ladder-modal" tabindex="-1" role="dialog" aria-labelledby="ladder-modal-label" aria-hidden="true">
@@ -133,6 +137,30 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'electric.front.ladder_popup.close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="result-modal" tabindex="-1" role="dialog" aria-labelledby="result-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ladder-modal-label">{{ 'electric.front.result_popup.title'|trans }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'electric.front.popup.close'|trans }}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline form-results">
+                        <div class="form-group">
+                            <label for="name" class="sr-only">Username</label>
+                            <input type="text" class="form-control" id="name" name="username" placeholder="Username">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save result</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'electric.front.popup.close'|trans }}</button>
                 </div>
             </div>
         </div>

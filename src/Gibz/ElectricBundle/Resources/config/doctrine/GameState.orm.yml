@@ -1,0 +1,19 @@
+Gibz\ElectricBundle\Entity\GameState:
+    type: entity
+    table: null
+    repositoryClass: Gibz\ElectricBundle\Repository\GameStateRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        uniqId:
+            type: string
+            length: 255
+            unique: true
+            column: uniq_id
+        state:
+            type: text
+    lifecycleCallbacks: {  }

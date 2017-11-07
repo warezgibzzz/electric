@@ -17,6 +17,10 @@ body.page_frontend_game {
         background: $secondary;
         border-radius: 10px;
         box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        -webkit-transition: all .3s ease-out;
+        -moz-transition: all .3s ease-out;
+        -o-transition: all .3s ease-out;
+        transition: all .3s ease-out;
         &.light-on{
           background: $cyan;
         }

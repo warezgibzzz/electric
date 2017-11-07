@@ -1,4 +1,5 @@
 services:
     gibz_electric.service.game_service:
         class: Gibz\ElectricBundle\Service\GameService
+        arguments: ["@doctrine", "@logger"]
         tags: ["thruway.resource"]
