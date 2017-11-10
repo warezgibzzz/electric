@@ -22,8 +22,14 @@ class GameState
      */
     private $state;
 
+    /**
+     * @var integer
+     */
+    private $counter;
+
     public function __construct()
     {
+        $this->setCounter(0);
         $this->setState([
             "state" => "game",
             "field" => [
@@ -217,5 +223,29 @@ class GameState
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set counter
+     *
+     * @param integer $counter
+     *
+     * @return GameState
+     */
+    public function setCounter($counter)
+    {
+        $this->counter = $counter;
+
+        return $this;
+    }
+
+    /**
+     * Get counter
+     *
+     * @return integer
+     */
+    public function getCounter()
+    {
+        return $this->counter;
     }
 }

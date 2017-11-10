@@ -194,6 +194,7 @@ class GameService
 
         $em = $this->doctrine->getManager();
         $gameState->setState($state);
+        $gameState->setCounter($gameState->getCounter() + 1);
         $em->merge($gameState);
         $em->flush();
 
@@ -244,7 +245,9 @@ class GameService
         $em = $this->doctrine->getManager()->getRepository('GibzElectricBundle:GameState');
         $query = $em->createQueryBuilder('gs');
         $result = $query->select('gs, u')
+            ->setMaxResults(10)
             ->where($query->expr()->isNotNull('gs.user'))
+            ->orderBy('gs.counter', 'asc')
             ->leftJoin('gs.user', 'u',
                 Join::WITH,
                 'gs.user = u.id')

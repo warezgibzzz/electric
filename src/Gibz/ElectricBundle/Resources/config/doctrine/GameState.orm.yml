@@ -16,6 +16,8 @@ Gibz\ElectricBundle\Entity\GameState:
             column: uniq_id
         state:
             type: text
+        counter:
+            type: integer
     manyToOne:
         user:
             targetEntity: Gibz\ElectricBundle\Entity\User

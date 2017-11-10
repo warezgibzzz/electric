@@ -189,5 +189,33 @@ class GameState
     {
         return unserialize($this->state);
     }
-}
+    /**
+     * @var \Gibz\ElectricBundle\Entity\User
+     */
+    private $user;
 
+
+    /**
+     * Set user
+     *
+     * @param \Gibz\ElectricBundle\Entity\User $user
+     *
+     * @return GameState
+     */
+    public function setUser(\Gibz\ElectricBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Gibz\ElectricBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+}
